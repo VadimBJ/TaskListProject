@@ -2,33 +2,41 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
-public class Menu {
+public class Menu implements Finals {
+  private static boolean isPlaying = true;
+
   public static void mainMenu(BufferedReader br, List<Task> taskList) throws IOException {
-    System.out.println("""
-        Доступные действия:
-          1. Посмотреть список задач
-          2. Добавить новую задачу
-          3. Удалить существующую задачу
-          4. Сортировка списка задач
-          5. Фильтр задач по категории/статусу/приоритету
-          6. Сохранить список задач в файл
-          7. Прочитать список задач из файла
-          8. Выйти из приложения""");
-    System.out.print("Введите номер пункта меню: ");
-    int choice = Integer.parseInt(br.readLine());
-    switch (choice) {
-      case 1 -> System.out.println("1");
-      case 2 -> System.out.println("2");
-      case 3 -> System.out.println("3");
-      case 4 -> System.out.println("4");
-      case 5 -> System.out.println("5");
-      case 6 -> System.out.println("6");
-      case 7 -> System.out.println("7");
-      case 8 -> System.out.println("exit");
+    while (isPlaying) {
+      System.out.println();
+      System.out.println(BLUE + "[ ОСНОВНОЕ МЕНЮ ]" + RESET);
+      System.out.println("""
+          Доступные действия:
+            1. Посмотреть список задач
+            2. Добавить новую задачу
+            3. Удалить существующую задачу
+            4. Сортировка списка задач
+            5. Фильтр задач по категории/статусу/приоритету
+            6. Сохранить список задач в файл
+            7. Прочитать список задач из файла
+            8. Выйти из приложения""");
+      System.out.print("Введите номер пункта меню: ");
+      int choice = Input.readIntLimited(1, 8);
+      switch (choice) {
+        case 1 -> Output.showAllTasks(br, taskList);
+        case 2 -> menuAddTask(br, taskList);
+        case 3 -> System.out.println("3"); //todo Удалить существующую задачу
+        case 4 -> System.out.println("4"); //todo Сортировка списка задач
+        case 5 -> menuFilterChoice(br, taskList);
+        case 6 -> Output.writeTaskToFile(taskList);
+        case 7 -> Input.readTaskFromFile(taskList);
+        case 8 -> menuExit(taskList);
+      }
     }
   }
 
   public static void menuFilterChoice(BufferedReader br, List<Task> taskList) throws IOException {
+    System.out.println();
+    System.out.println(BLUE + "[ ФИЛЬТРАЦИЯ ЗАДАЧ ]" + RESET);
     System.out.println("""
         Доступные фильтры:
           1. Отфильтровать список задач по категориям
@@ -36,23 +44,43 @@ public class Menu {
           3. Отфильтровать список задач по статусу выполнения
           4. Вернуться в главное меню""");
     System.out.print("Введите номер пункта меню: ");
-    int choice = Integer.parseInt(br.readLine());
+    int choice = Input.readIntLimited(1, 4);
     switch (choice) {
-      case 1 -> System.out.println("1");
-      case 2 -> System.out.println("2");
-      case 3 -> System.out.println("3");
-      case 4 -> System.out.println("4");
+      case 1 -> Output.showTasksByCategory(br, taskList);
+      case 2 -> Output.showTasksByPriority(br, taskList);
+      case 3 -> menuShowTasksByIsDone(br, taskList);
+      case 4 -> mainMenu(br, taskList);
 
     }
   }
 
-  public static void menuAddTask(BufferedReader br, List<Task> taskList) {
-    //todo добавление задачи
+  public static void menuAddTask(BufferedReader br, List<Task> taskList) throws IOException {
+    System.out.println();
+    System.out.println(BLUE + "[ ДОБАВЛЕНИЕ НОВОЙ ЗАДАЧИ ]" + RESET);
+    String title;
+    System.out.println(CYAN + "Поле 'Название' не может быть пустым" + RESET);
+    do {
+      System.out.print("Введите название для задачи: ");
+      title = br.readLine();
+      if (title.trim().isEmpty()) {
+        System.out.println(RED + "Поле 'Название' не может быть пустым!" + RESET);
+      }
+    } while (title.trim().isEmpty());
+    System.out.println(CYAN + "Поле 'Описание' может быть пустым" + RESET);
+    System.out.print("Введите детальное описание задачи: ");
+    String description = br.readLine();
+    System.out.println(CYAN + "Поле 'Дата' может быть пустым" + RESET);
+    System.out.print("Введите дату для задачи [ГГГГ.ММ.ДД]: ");
+    String date = br.readLine(); //todo добавить работу с типом Data
+    taskList.add(new Task(title, description, Input.takeCategory(), Input.takePriority(), date,
+        false));
+    System.out.println(CYAN + "... Задача добавлена в общий список задач ..." + RESET);
   }
 
   public void menuSort() {
 //todo меню сортировки
   }
+
 
   public static void menuTaskListShow(BufferedReader br, List<Task> taskList) throws IOException {
     System.out.println("""
@@ -64,19 +92,21 @@ public class Menu {
           5. Изменить сортировку списка задач
           6. Вернуться в главное меню""");
     System.out.print("Введите номер пункта меню: ");
-    int choice = Integer.parseInt(br.readLine());
+    int choice = Input.readIntLimited(1, 6);
     switch (choice) {
-      case 1 -> System.out.println("1");
-      case 2 -> System.out.println("2");
-      case 3 -> System.out.println("3");
-      case 4 -> System.out.println("4");
-      case 5 -> System.out.println("5");
-      case 6 -> System.out.println("6");
+      case 1 -> menuTaskView(taskList);
+      case 2 -> menuAddTask(br, taskList);
+      case 3 -> System.out.println("3"); //todo Пометить задачу как выполненную
+      case 4 -> System.out.println("4"); //todo Удалить задачу по Id
+      case 5 -> System.out.println("5"); //todo Изменить сортировку списка задач
+      case 6 -> mainMenu(br, taskList);
     }
   }
 
   public static void menuTaskView(List<Task> taskList) throws IOException {
-    // todo просмотр задачи
+    System.out.print("Введите Id задачи: ");
+    int id = Input.readIntLimited(1,taskList.size());
+    Output.showTaskById(taskList,id-1);
   }
 
   public static void menuShowTasksByIsDone(BufferedReader br, List<Task> taskList) throws IOException {
@@ -86,23 +116,30 @@ public class Menu {
           2. Просмотреть не выполненные задачи
           3. Вернуться в главное меню""");
     System.out.print("Введите номер пункта меню: ");
-    int choice = Integer.parseInt(br.readLine());
+    int choice = Input.readIntLimited(1, 3);
     switch (choice) {
-      case 1 -> System.out.println("1");
-      case 2 -> System.out.println("2");
-      case 3 -> System.out.println("3");
+      case 1 -> Output.showTasksByIsDone(br, taskList, true);
+      case 2 -> Output.showTasksByIsDone(br, taskList, false);
+      case 3 -> mainMenu(br, taskList);
 
     }
   }
 
   public static void menuExit(List<Task> taskList) throws IOException {
+    System.out.println();
+    System.out.println(BLUE + "[ ВЫХОД ИЗ ПРОГРАММЫ ]" + RESET);
     System.out.println("""
         Доступные действия:
           1. Сохранить новые задачи в файл
           2. Выйти без сохранения""");
     System.out.print("Введите номер пункта меню: ");
-
-    //todo меню для выхода
+    int choice = Input.readIntLimited(1, 2);
+    if (choice == 1) {
+      Output.writeTaskToFile(taskList);
+    }
+    isPlaying = false;
+    System.out.println(CYAN+"До скорых встреч!");
   }
 }
+
 
