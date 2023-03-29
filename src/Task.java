@@ -1,53 +1,71 @@
+import java.util.Date;
+
 public class Task {
-  private static int count = 0;
-  private int id; //уникальный идентификатор задачи
-  private String title;//название задачи
-  private String description; // описание задачи
-  private Category category; // enum категории
-  private Priority priority; // enum приоритет
-  private String date; // дата, на которую запланирована задача
-  private boolean isDone; // флаг выполнения
+    private static int count = 0;
+    private int id; //уникальный идентификатор задачи
+    private String title;//название задачи
+    private String description; // описание задачи
+    private Category category; // enum категории
+    private Priority priority; // enum приоритет
+    private Date planDate; // дата, на которую запланирована задача
 
-  public Task(String title, String description, Category category, Priority priority,
-              String date, boolean isDone) {
-    this.id = ++count;
-    this.title = title;
-    this.description = description;
-    this.category = category;
-    this.priority = priority;
-    this.date = date;
-    this.isDone = isDone;
-  }
+    private Date createDate;
+    private boolean status; // флаг выполнения
 
-  public static int getCount() {
-    return count;
-  }
+    public Task(String title, String description, Category category, Priority priority,
+                Date planDate, boolean status) {
+        this.id = ++count;
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.priority = priority;
+        this.planDate = planDate;
+        this.status = status;
+    }
 
-  public int getId() {
-    return id;
-  }
+    public static int getCount() {
+        return count;
+    }
 
-  public String getTitle() {
-    return title;
-  }
+    public int getId() {
+        return id;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public String getTitle() {
+        return title;
+    }
 
-  public Category getCategory() {
-    return category;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public Priority getPriority() {
-    return priority;
-  }
+    public Category getCategory() {
+        return category;
+    }
 
-  public String getDate() {
-    return date;
-  }
+    public Priority getPriority() {
+        return priority;
+    }
 
-  public boolean isDone() {
-    return isDone;
-  }
+    public Date getPlanDate() {
+        return planDate;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 }
+
+
