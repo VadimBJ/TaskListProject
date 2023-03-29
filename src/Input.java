@@ -5,8 +5,9 @@ public class Input implements Finals {
   private static boolean isRead = false;
 
   public static void readTaskFromFile(List<Task> taskList) throws IOException {
-    if (!isRead) {
-      File file = new File("res/TaskList.csv"); //todo добавить проверку есть ли файл
+    File file = new File("res/TaskList.csv");
+   if (file.exists()) {
+
       BufferedReader fr = new BufferedReader(new FileReader(file));
 
       for (String line = fr.readLine(); line != null; line = fr.readLine()) {
@@ -28,8 +29,8 @@ public class Input implements Finals {
       }
       fr.close();
       isRead = true;
-    }
-    System.out.println(CYAN + "... Файл прочитан ..." + RESET);
+
+    System.out.println(CYAN + "... Файл прочитан ..." + RESET);}
   }
 
   public static int readIntLimited(int min, int max) throws IOException {

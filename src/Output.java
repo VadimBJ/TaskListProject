@@ -60,6 +60,7 @@ public class Output implements Finals {
     }
     System.out.println(FOOTER);
     Menu.menuTaskListShow(br, taskList);
+    showAllTasks(br, taskList);
   }
 
   public static void showTaskById(List<Task> taskList, int id) {

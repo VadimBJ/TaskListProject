@@ -17,7 +17,7 @@ public class Menu implements Finals {
             4. Сортировка списка задач
             5. Фильтр задач по категории/статусу/приоритету
             6. Сохранить список задач в файл
-            7. Прочитать список задач из файла
+            7. Очистить список задач
             8. Выйти из приложения""");
       System.out.print("Введите номер пункта меню: ");
       int choice = Input.readIntLimited(1, 8);
@@ -28,7 +28,7 @@ public class Menu implements Finals {
         case 4 -> System.out.println("4"); //todo Сортировка списка задач
         case 5 -> menuFilterChoice(br, taskList);
         case 6 -> Output.writeTaskToFile(taskList);
-        case 7 -> Input.readTaskFromFile(taskList);
+        case 7 -> taskList.clear();
         case 8 -> menuExit(taskList);
       }
     }
@@ -68,7 +68,7 @@ public class Menu implements Finals {
     } while (title.trim().isEmpty());
     System.out.println(CYAN + "Поле 'Описание' может быть пустым" + RESET);
     System.out.print("Введите детальное описание задачи: ");
-    String description = br.readLine();
+    String description = br.readLine().trim();
     System.out.println(CYAN + "Поле 'Дата' может быть пустым" + RESET);
     System.out.print("Введите дату для задачи [ГГГГ.ММ.ДД]: ");
     String date = br.readLine(); //todo добавить работу с типом Data
@@ -139,6 +139,7 @@ public class Menu implements Finals {
     }
     isPlaying = false;
     System.out.println(CYAN+"До скорых встреч!");
+    System.exit(0);
   }
 }
 
