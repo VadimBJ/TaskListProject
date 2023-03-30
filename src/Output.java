@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 public class Output implements Finals {
@@ -65,29 +64,41 @@ public class Output implements Finals {
   }
 
   public static void showTaskById(List<Task> taskList, int id) {
-    Task task = taskList.get(id); //todo сделать поиск id перебором
-    System.out.println("─".repeat(95));
-    System.out.println(BLUE + "Задача " + task.getId() + ": " + RESET + task.getTitle());
-    System.out.println();
-    if (!task.getDescription().trim().isEmpty() && !task.getDescription().contains("-не указано-")) {
-      String[] description = task.getDescription().split(" ");
-      int symbolCount = 0;
-      for (String s : description) {
-        symbolCount += s.length();
-        System.out.print(s + " ");
-        if (symbolCount > 70) {
-          System.out.println();
-          symbolCount = 0;
-        }
+    boolean isFound = false;
+    for (int i = 0; i < taskList.size(); i++) {
+      if (taskList.get(i).getId() == id) {
+        id = i;
+        isFound = true;
+        break;
       }
     }
-    System.out.println("\nДата: " + DataUtils.getDateToStr(task.getPlanDate()));
-    System.out.println();
-    System.out.println(BLUE + "Категория: " + RESET + task.getCategory().getName());
-    System.out.println(BLUE + "Приоритет: " + task.getPriority().getName());
-    System.out.println(BLUE + "Статус задачи: " + RESET + (task.getIsDone() ? "Выполнено" : "Не выполнено"));
-    System.out.println("─".repeat(60));
-    System.out.println();
+    if (isFound) {
+      Task task = taskList.get(id);
+      System.out.println("─".repeat(95));
+      System.out.println(BLUE + "Задача " + task.getId() + ": " + RESET + task.getTitle());
+      System.out.println();
+      if (!task.getDescription().trim().isEmpty() && !task.getDescription().contains("-не указано-")) {
+        String[] description = task.getDescription().split(" ");
+        int symbolCount = 0;
+        for (String s : description) {
+          symbolCount += s.length();
+          System.out.print(s + " ");
+          if (symbolCount > 70) {
+            System.out.println();
+            symbolCount = 0;
+          }
+        }
+      }
+      System.out.println("\nДата: " + DataUtils.getDateToStr(task.getPlanDate()));
+      System.out.println();
+      System.out.println(BLUE + "Категория: " + RESET + task.getCategory().getName());
+      System.out.println(BLUE + "Приоритет: " + task.getPriority().getName());
+      System.out.println(BLUE + "Статус задачи: " + RESET + (task.getIsDone() ? "Выполнено" : "Не выполнено"));
+      System.out.println("─".repeat(60));
+      System.out.println();
+    } else {
+      System.out.println(Menu.RED + "Задача с Id: " + id + " не найдена!" + Menu.RESET);
+    }
   }
 
   public static void sortByStatusAndDataPlan(BufferedReader br, List<Task> taskList) throws IOException {
@@ -95,7 +106,7 @@ public class Output implements Finals {
     headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, RESET, RESET, PURPLE, RESET);
     System.out.println(headerColorSort);
     SortStatusAndDatePlan sortRule = new SortStatusAndDatePlan();
-    Collections.sort(taskList, sortRule);
+    taskList.sort(sortRule);
     for (Task task : taskList) {
       System.out.print(task);
     }
@@ -108,7 +119,7 @@ public class Output implements Finals {
     headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, PURPLE, RESET, RESET, RESET);
     System.out.println(headerColorSort);
     SortDatePlanAndDescription sortRule = new SortDatePlanAndDescription();
-    Collections.sort(taskList, sortRule);
+    taskList.sort(sortRule);
     for (Task task : taskList) {
       System.out.print(task);
     }
@@ -121,7 +132,7 @@ public class Output implements Finals {
     headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, PURPLE, RESET, RESET, RESET);
     System.out.println(headerColorSort);
     SortPriorityAndStatus sortRule = new SortPriorityAndStatus();
-    Collections.sort(taskList, sortRule);
+    taskList.sort(sortRule);
     for (Task task : taskList) {
       System.out.print(task);
     }
@@ -134,7 +145,7 @@ public class Output implements Finals {
     headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, PURPLE, RESET, RESET, RESET);
     System.out.println(headerColorSort);
     SortCategoryAndName sortRule = new SortCategoryAndName();
-    Collections.sort(taskList, sortRule);
+    taskList.sort(sortRule);
     for (Task task : taskList) {
       System.out.print(task);
     }
@@ -168,7 +179,5 @@ public class Output implements Finals {
     }
     fileWriter.close();
     System.out.println(GREEN + "... файл сохранен!" + RESET);
-
   }
-
 }
