@@ -71,10 +71,9 @@ public class Menu implements Finals {
     switch (choice) {
       case 1 -> Output.sortByStatusAndDataPlan(br, taskList);
       case 2 -> Output.sortByStatusAndName(br, taskList);
-      case 3 -> Output.sortByPriorityAndStatus(br,taskList);
+      case 3 -> Output.sortByPriorityAndStatus(br, taskList);
       case 4 -> Output.sortByCategoryAndName(br, taskList);
       case 5 -> mainMenu(br, taskList);
-
     }
   }
 
@@ -82,7 +81,7 @@ public class Menu implements Finals {
     System.out.println();
     System.out.println(BLUE + "[ ДОБАВЛЕНИЕ НОВОЙ ЗАДАЧИ ]" + RESET);
     String title;
-    System.out.println(CYAN + "Поле 'Название' не может быть пустым" + RESET);
+    System.out.println(CYAN + "Поле 'Название' " + RED + "НЕ МОЖЕТ" + CYAN + " быть пустым" + RESET);
     do {
       System.out.print("Введите название для задачи: ");
       title = br.readLine();
@@ -99,20 +98,21 @@ public class Menu implements Finals {
     while (cycle) {
       System.out.print("Введите дату для задачи [ГГГГ.ММ.ДД]: ");
       String readDate = br.readLine();
-      if (!readDate.isEmpty()) {
+      if (!readDate.trim().isEmpty()) {
         try {
           if (DataUtils.checkFormatData(readDate)) {
             date = DataUtils.getDataFromStr(readDate);
             if (!DataUtils.checkValidDate(date)) {
-              System.out.println(RED + "Планируемая дата исполнения задачи не может быть позже текущей даты" + RESET);
+              System.out.println(RED + "Планируемая дата исполнения задачи не может быть раньше " +
+                                 "текущей даты!" + RESET);
             } else {
               cycle = false;
             }
           } else {
-            System.out.println(RED + "Некорректный формат даты. Повторите еще раз" + RESET);
+            System.out.println(RED + "Некорректный формат даты. Повторите еще раз!" + RESET);
           }
         } catch (ParseException | NumberFormatException | StringIndexOutOfBoundsException e) {
-          System.out.println(RED + "Некорректный формат даты. Повторите еще раз" + RESET);
+          System.out.println(RED + "Некорректный формат даты. Повторите еще раз!" + RESET);
         }
       } else {
         cycle = false;
@@ -130,24 +130,26 @@ public class Menu implements Finals {
           2. Добавить новую задачу
           3. Удалить задачу по Id
           4. Пометить задачу как выполненную
-          5. Изменить сортировку списка задач
-          6. Вернуться в главное меню""");
+          5. Пометить задачу как НЕ выполненную
+          6. Изменить сортировку списка задач
+          7. Вернуться в главное меню""");
     System.out.print("Введите номер пункта меню: ");
-    int choice = Input.readIntLimited(1, 6);
+    int choice = Input.readIntLimited(1, 7);
     switch (choice) {
       case 1 -> menuTaskView(taskList);
       case 2 -> menuAddTask(br, taskList);
       case 3 -> Task.taskDeleteById(taskList);
       case 4 -> Task.taskMarkAsDone(taskList);
-      case 5 -> menuSortChoice(br, taskList);
-      case 6 -> mainMenu(br, taskList);
+      case 5 -> Task.taskMarkAsUndone(taskList);
+      case 6 -> menuSortChoice(br, taskList);
+      case 7 -> mainMenu(br, taskList);
     }
   }
 
   public static void menuTaskView(List<Task> taskList) throws IOException {
     System.out.print("Введите Id задачи: ");
     int id = Input.readIntLimited(1, taskList.size());
-    Output.showTaskById(taskList, id - 1);
+    Output.showTaskById(taskList, id);
   }
 
   public static void menuShowTasksByIsDone(BufferedReader br, List<Task> taskList) throws IOException {
@@ -162,7 +164,6 @@ public class Menu implements Finals {
       case 1 -> Output.showTasksByIsDone(br, taskList, true);
       case 2 -> Output.showTasksByIsDone(br, taskList, false);
       case 3 -> mainMenu(br, taskList);
-
     }
   }
 
