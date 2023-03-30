@@ -1,3 +1,7 @@
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
 public class Task {
   private static int count = 0;
   private int id; //уникальный идентификатор задачи
@@ -5,18 +9,21 @@ public class Task {
   private String description; // описание задачи
   private Category category; // enum категории
   private Priority priority; // enum приоритет
-  private String date; // дата, на которую запланирована задача
+  private Date planDate; // дата, на которую запланирована задача
+
+  private Date createDate;
   private boolean isDone; // флаг выполнения
 
   public Task(String title, String description, Category category, Priority priority,
-              String date, boolean isDone) {
+              Date planDate, boolean isDone, Date createDate) {
     this.id = ++count;
     this.title = title;
     this.description = description;
     this.category = category;
     this.priority = priority;
-    this.date = date;
+    this.planDate = planDate;
     this.isDone = isDone;
+    this.createDate = createDate;
   }
 
   @Override
@@ -35,13 +42,10 @@ public class Task {
     }
     String category1 = category.getName();
     String priority1 = priority.getName();
-    String date1 = date;
-    if (date1.isEmpty()) {
-      date1 = "не указано";
-    }
-    String isDone1 = isDone ? "✔️" : "⏰";
+    String date1 = DataUtils.getDateToStr(planDate);
+    String isDone1 = isDone ? "✔" : "⏰";
     return String.format("""
-            │%3s │%-25s│%-40s│%10s │   %10s │%11s│%s  %s️   │%n""",
+            │%3s │%-25s│%-40s│%10s │   %10s │%11s│%s  %s   │%n""",
         id1, title1, description1, category1, priority1, date1, Menu.SPACE, isDone1);
   }
 
@@ -65,12 +69,29 @@ public class Task {
     return priority;
   }
 
-  public String getDate() {
-    return date;
+  public Date getPlanDate() {
+    return planDate;
   }
 
   public boolean getIsDone() {
     return isDone;
+  }
+
+  public static void taskDeleteById(List<Task> taskList) throws IOException {
+    System.out.print("Введите Id задачи которую хотите удалить: ");
+    int id = Input.readIntLimited(0, count);
+    boolean isNotFound = true;
+    for (int i = 0; i < taskList.size(); i++) {
+      if (taskList.get(i).getId() == id) {
+        taskList.remove(i);
+        System.out.println(Menu.CYAN + "Задача с Id:" + id + " удалена!" + Menu.RESET);
+        isNotFound = false;
+        break;
+      }
+    }
+    if (isNotFound) {
+      System.out.println(Menu.RED + "Задача с Id:" + id + " не найдена!" + Menu.RESET);
+    }
   }
 
   public void markAsDone() {
@@ -81,4 +102,7 @@ public class Task {
     this.isDone = false;
   }
 
+  public Date getCreateDate() {
+    return createDate;
+  }
 }

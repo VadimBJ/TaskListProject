@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 public class Output implements Finals {
@@ -60,10 +61,11 @@ public class Output implements Finals {
     }
     System.out.println(FOOTER);
     Menu.menuTaskListShow(br, taskList);
+    showAllTasks(br, taskList);
   }
 
   public static void showTaskById(List<Task> taskList, int id) {
-    Task task = taskList.get(id);
+    Task task = taskList.get(id); //todo сделать поиск id перебором
     System.out.println("─".repeat(95));
     System.out.println(BLUE + "Задача " + task.getId() + ": " + RESET + task.getTitle());
     System.out.println();
@@ -79,15 +81,39 @@ public class Output implements Finals {
         }
       }
     }
-    if (!task.getDate().trim().isEmpty() && !task.getDate().contains("не указано")) {
-      System.out.println("\nДата: " + task.getDate()); //todo добавить работу с типом Data
-      System.out.println();
-    }
+    System.out.println("\nДата: " + DataUtils.getDateToStr(task.getPlanDate()));
+    System.out.println();
     System.out.println(BLUE + "Категория: " + RESET + task.getCategory().getName());
     System.out.println(BLUE + "Приоритет: " + task.getPriority().getName());
     System.out.println(BLUE + "Статус задачи: " + RESET + (task.getIsDone() ? "Выполнено" : "Не выполнено"));
     System.out.println("─".repeat(60));
     System.out.println();
+  }
+
+  public static void sortByStatusAndDataPlan(BufferedReader br, List<Task> taskList) throws IOException {
+    System.out.println();
+    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, RESET, RESET, PURPLE, RESET);
+    System.out.println(headerColorSort);
+    SortStatusAndDatePlan sortRule = new SortStatusAndDatePlan();
+    Collections.sort(taskList, sortRule);
+    for (Task task : taskList) {
+      System.out.print(task);
+    }
+    System.out.println(FOOTER);
+    Menu.menuSortChoice(br, taskList);
+  }
+
+  public static void sortByStatusAndName(BufferedReader br, List<Task> taskList) throws IOException {
+    System.out.println();
+    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, PURPLE, RESET, RESET, RESET);
+    System.out.println(headerColorSort);
+    SortDatePlanAndDescription sortRule = new SortDatePlanAndDescription();
+    Collections.sort(taskList, sortRule);
+    for (Task task : taskList) {
+      System.out.print(task);
+    }
+    System.out.println(FOOTER);
+    Menu.menuSortChoice(br, taskList);
   }
 
   public static void writeTaskToFile(List<Task> taskList) throws IOException {
@@ -106,11 +132,12 @@ public class Output implements Finals {
     FileWriter fileWriter = new FileWriter(file);
     for (Task task : taskList) {
       String isDone = task.getIsDone() ? "1" : "0";
-      String date = task.getDate().equals("не указано") ? "" : task.getDate();
+      String planeDateStr = DataUtils.getDateToStrToFile(task.getPlanDate());
+      String createDateStr = DataUtils.getDateToStrToFile(task.getCreateDate());
       String description = task.getDescription().equals(" -не указано-") ? "" : task.getDescription();
       String result =
           task.getTitle() + ";" + description + ";" + task.getCategory() + ";"
-          + task.getPriority() + ";" + date + ";" + isDone;
+          + task.getPriority() + ";" + planeDateStr + ";" + isDone + ";" + createDateStr;
       fileWriter.write(result + "\n");
     }
     fileWriter.close();
