@@ -43,9 +43,9 @@ public class Task {
     String category1 = category.getName();
     String priority1 = priority.getName();
     String date1 = DataUtils.getDateToStr(planDate);
-    String isDone1 = isDone ? "✔" : "⏰";
+    String isDone1 = isDone ? "✔️" : "⏰";
     return String.format("""
-            │%3s │%-25s│%-40s│%10s │   %10s │%11s│%s  %s   │%n""",
+            │%3s │%-25s│%-40s│%10s │   %10s │%11s│%s  %s️   │%n""",
         id1, title1, description1, category1, priority1, date1, Menu.SPACE, isDone1);
   }
 
