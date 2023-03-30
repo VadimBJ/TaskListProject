@@ -143,7 +143,7 @@ public class Menu implements Finals {
       case 1 -> menuTaskView(taskList);
       case 2 -> menuAddTask(br, taskList);
       case 3 -> Task.taskDeleteById(taskList);
-      case 4 -> System.out.println("4"); //todo Пометить задачу как выполненную
+      case 4 -> Task.taskMarkAsDone(taskList);
       case 5 -> menuSortChoice(br, taskList);
       case 6 -> mainMenu(br, taskList);
     }

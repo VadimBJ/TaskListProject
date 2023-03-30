@@ -1,7 +1,5 @@
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
+
 
 public class SortStatusAndDatePlan implements Comparator<Task> {
 
