@@ -116,6 +116,32 @@ public class Output implements Finals {
     Menu.menuSortChoice(br, taskList);
   }
 
+  public static void sortByPriorityAndStatus(BufferedReader br, List<Task> taskList) throws IOException {
+    System.out.println();
+    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, PURPLE, RESET, RESET, RESET);
+    System.out.println(headerColorSort);
+    SortPriorityAndStatus sortRule = new SortPriorityAndStatus();
+    Collections.sort(taskList, sortRule);
+    for (Task task : taskList) {
+      System.out.print(task);
+    }
+    System.out.println(FOOTER);
+    Menu.menuSortChoice(br, taskList);
+  }
+
+  public static void sortByCategoryAndName(BufferedReader br, List<Task> taskList) throws IOException {
+    System.out.println();
+    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, PURPLE, RESET, RESET, RESET);
+    System.out.println(headerColorSort);
+    SortCategoryAndName sortRule = new SortCategoryAndName();
+    Collections.sort(taskList, sortRule);
+    for (Task task : taskList) {
+      System.out.print(task);
+    }
+    System.out.println(FOOTER);
+    Menu.menuSortChoice(br, taskList);
+  }
+
   public static void writeTaskToFile(List<Task> taskList) throws IOException {
     File file = new File("res/TaskList.csv");
     if (!file.exists()) {
