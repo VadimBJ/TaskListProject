@@ -20,5 +20,4 @@ public enum Category {
   public String getName() {
     return categoryName;
   }
-
 }
