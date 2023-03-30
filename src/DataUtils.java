@@ -23,19 +23,20 @@ public class DataUtils {
   }
 
   public static Date getDataFromStr(String dateStr) throws ParseException {
-    if (dateStr.isEmpty()) {
+    if (dateStr == null || dateStr.isEmpty()) {
       return null;
     }
     SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
-    Date date = format.parse(dateStr);
-    return date;
+    return format.parse(dateStr);
   }
 
   public static boolean checkValidDate(Date date) {
     boolean result = false;
-    Date dataNow = dateRemoveTime(new Date());
-    if (date.compareTo(dataNow) == 0 || date.after(dataNow)) {
-      result = true;
+    if (date != null) {
+      Date dataNow = dateRemoveTime(new Date());
+      if (date.compareTo(dataNow) == 0 || date.after(dataNow)) {
+        result = true;
+      }
     }
     return result;
   }
@@ -53,11 +54,13 @@ public class DataUtils {
 
   public static boolean checkFormatData(String dateStr) {
     boolean result = false;
-    int month = Integer.parseInt(dateStr.substring(5, 7));
-    int day = Integer.parseInt(dateStr.substring(8, 10));
-    if (month >= 1 && month <= 12) {
-      if (day >= 1 && day <= 31) {
-        return true;
+    if (dateStr != null) {
+      int month = Integer.parseInt(dateStr.substring(5, 7));
+      int day = Integer.parseInt(dateStr.substring(8, 10));
+      if (month >= 1 && month <= 12) {
+        if (day >= 1 && day <= 31) {
+          return true;
+        }
       }
     }
     return result;
