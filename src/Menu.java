@@ -27,7 +27,7 @@ public class Menu implements Finals {
         case 1 -> Output.showAllTasks(br, taskList);
         case 2 -> menuAddTask(br, taskList);
         case 3 -> Task.taskDeleteById(taskList);
-        case 4 -> menuSortChoice(br, taskList); //todo Сортировка списка задач
+        case 4 -> menuSortChoice(br, taskList);
         case 5 -> menuFilterChoice(br, taskList);
         case 6 -> Output.writeTaskToFile(taskList);
         case 7 -> taskList.clear();
@@ -71,8 +71,8 @@ public class Menu implements Finals {
     switch (choice) {
       case 1 -> Output.sortByStatusAndDataPlan(br, taskList);
       case 2 -> Output.sortByStatusAndName(br, taskList);
-      case 3 -> System.out.println();//TODO
-      case 4 -> System.out.println();//TODO
+      case 3 -> Output.sortByPriorityAndStatus(br,taskList);
+      case 4 -> Output.sortByCategoryAndName(br, taskList);
       case 5 -> mainMenu(br, taskList);
 
     }
@@ -122,11 +122,6 @@ public class Menu implements Finals {
         false, new Date()));
     System.out.println(CYAN + "... Задача добавлена в общий список задач ..." + RESET);
   }
-
-  public void menuSort() {
-//todo меню сортировки
-  }
-
 
   public static void menuTaskListShow(BufferedReader br, List<Task> taskList) throws IOException {
     System.out.println("""
