@@ -4,14 +4,13 @@ import java.util.List;
 
 public class Task {
   private static int count = 0;
-  private int id; //уникальный идентификатор задачи
-  private String title;//название задачи
-  private String description; // описание задачи
-  private Category category; // enum категории
-  private Priority priority; // enum приоритет
-  private Date planDate; // дата, на которую запланирована задача
-
-  private Date createDate;
+  private final int id; //уникальный идентификатор задачи
+  private final String title;//название задачи
+  private final String description; // описание задачи
+  private final Category category; // enum категории
+  private final Priority priority; // enum приоритет
+  private final Date planDate; // дата, на которую запланирована задача
+  private final Date createDate;
   private boolean isDone; // флаг выполнения
 
   public Task(String title, String description, Category category, Priority priority,
@@ -79,31 +78,32 @@ public class Task {
 
   public static void taskDeleteById(List<Task> taskList) throws IOException {
     System.out.print("Введите Id задачи которую хотите удалить: ");
-    int id = Input.readIntLimited(0, count);
+    int id = Input.readIntLimited(1, count);
     boolean isNotFound = true;
     for (int i = 0; i < taskList.size(); i++) {
       if (taskList.get(i).getId() == id) {
         taskList.remove(i);
-        System.out.println(Menu.CYAN + "Задача с Id:" + id + " удалена!" + Menu.RESET);
+        System.out.println(Menu.CYAN + "Задача с Id: " + id + " удалена!" + Menu.RESET);
         isNotFound = false;
         break;
       }
     }
     if (isNotFound) {
-      System.out.println(Menu.RED + "Задача с Id:" + id + " не найдена!" + Menu.RESET);
+      System.out.println(Menu.RED + "Задача с Id: " + id + " не найдена!" + Menu.RESET);
     }
   }
 
   public void markAsDone() {
     this.isDone = true;
   }
+
   public static void taskMarkAsDone(List<Task> taskList) throws IOException {
     System.out.print("Введите Id задачи которую хотите пометить как выполненную: ");
-    int id = Input.readIntLimited(0, count);
+    int id = Input.readIntLimited(1, count);
     boolean isNotFound = true;
-    for (int i = 0; i < taskList.size(); i++) {
-      if (taskList.get(i).getId() == id) {
-        taskList.get(i).markAsDone();
+    for (Task task : taskList) {
+      if (task.getId() == id) {
+        task.markAsDone();
         System.out.println(Menu.CYAN + "Задача с Id:" + id + " выполнена!" + Menu.RESET);
         isNotFound = false;
         break;
@@ -117,14 +117,15 @@ public class Task {
   public void markAsUndone() {
     this.isDone = false;
   }
+
   public static void taskMarkAsUndone(List<Task> taskList) throws IOException {
     System.out.print("Введите Id задачи которую хотите пометить как невыполненную: ");
-    int id = Input.readIntLimited(0, count);
+    int id = Input.readIntLimited(1, count);
     boolean isNotFound = true;
-    for (int i = 0; i < taskList.size(); i++) {
-      if (taskList.get(i).getId() == id) {
-        taskList.get(i).markAsUndone();
-        System.out.println(Menu.CYAN + "Задача с Id:" + id + " подлежит выполнению!" + Menu.RESET);
+    for (Task task : taskList) {
+      if (task.getId() == id) {
+        task.markAsUndone();
+        System.out.println(Menu.CYAN + "Задача с Id:" + id + " помечена как не выполненная" + Menu.RESET);
         isNotFound = false;
         break;
       }
