@@ -10,6 +10,5 @@ public class Runner {
     Input.readTaskFromFile(taskList);
     System.out.println(Output.logo);
     Menu.mainMenu(br, taskList);
-
   }
 }
