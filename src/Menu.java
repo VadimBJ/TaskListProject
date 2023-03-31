@@ -30,10 +30,26 @@ public class Menu implements Finals {
         case 4 -> menuSortChoice(br, taskList);
         case 5 -> menuFilterChoice(br, taskList);
         case 6 -> Output.writeTaskToFile(taskList);
-        case 7 -> taskList.clear();
+        case 7 -> menuClearTasklist(taskList);
         case 8 -> menuExit(taskList);
       }
     }
+  }
+
+  public static void menuClearTasklist(List<Task> taskList) throws IOException {
+    System.out.println();
+    System.out.println(RED + "[ УДАЛЕНИЕ ВСЕХ ЗАДАЧ ]" + RESET);
+    System.out.println("""
+        Вы уверены что хотите удалить все задачи из списка?
+          1. Да, я хочу удалить все даступные задачи
+          2. Нет""");
+    System.out.print("Введите номер пункта меню: ");
+    int choice = Input.readIntLimited(1, 2);
+    if (choice == 1) {
+      taskList.clear();
+      System.out.println(CYAN + "... Список задач очищен ..." + RESET);
+    }
+
   }
 
   public static void menuFilterChoice(BufferedReader br, List<Task> taskList) throws IOException {
@@ -61,19 +77,19 @@ public class Menu implements Finals {
     System.out.println(BLUE + "[ СOРТИРОВКА ЗАДАЧ ]" + RESET);
     System.out.println("""
         Доступные фильтры:
-          1. Отсортировать список задач по статусу
-          2. Отсортировать список задач по дате планированная
-          3. Отсортировать список задач по приоритету
-          4. Отсортировать список задач по категориям
-          5. Вернуться в главное меню""");
+          1. Отсортировать список задач по категориям
+          2. Отсортировать список задач по приоритету
+          3. Отсортировать список задач по дате
+          4. Отсортировать список задач по статусу
+          5. Вернуть стандартную сортировку""");
     System.out.print("Введите номер пункта меню: ");
     int choice = Input.readIntLimited(1, 5);
     switch (choice) {
-      case 1 -> Output.sortByStatusAndDataPlan(br, taskList);
-      case 2 -> Output.sortByStatusAndName(br, taskList);
-      case 3 -> Output.sortByPriorityAndStatus(br, taskList);
-      case 4 -> Output.sortByCategoryAndName(br, taskList);
-      case 5 -> mainMenu(br, taskList);
+      case 1 -> Output.sortByCategoryAndName(br, taskList);
+      case 2 -> Output.sortByPriorityAndStatus(br, taskList);
+      case 3 -> Output.sortByStatusAndName(br, taskList);
+      case 4 -> Output.sortByStatusAndDataPlan(br, taskList);
+      case 5 -> Output.sortById(br, taskList);
     }
   }
 
@@ -132,9 +148,10 @@ public class Menu implements Finals {
           4. Пометить задачу как выполненную
           5. Пометить задачу как НЕ выполненную
           6. Изменить сортировку списка задач
-          7. Вернуться в главное меню""");
+          7. Изменить фильтр для списка задач
+          8. Вернуться в главное меню""");
     System.out.print("Введите номер пункта меню: ");
-    int choice = Input.readIntLimited(1, 7);
+    int choice = Input.readIntLimited(1, 8);
     switch (choice) {
       case 1 -> menuTaskView(taskList);
       case 2 -> menuAddTask(br, taskList);
@@ -142,7 +159,8 @@ public class Menu implements Finals {
       case 4 -> Task.taskMarkAsDone(taskList);
       case 5 -> Task.taskMarkAsUndone(taskList);
       case 6 -> menuSortChoice(br, taskList);
-      case 7 -> mainMenu(br, taskList);
+      case 7 -> menuFilterChoice(br, taskList);
+      case 8 -> mainMenu(br, taskList);
     }
   }
 

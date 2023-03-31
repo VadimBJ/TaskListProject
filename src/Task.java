@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-public class Task {
+public class Task implements Comparable<Task> {
   private static int count = 0;
   private final int id; //уникальный идентификатор задачи
   private final String title;//название задачи
@@ -137,5 +137,10 @@ public class Task {
 
   public Date getCreateDate() {
     return createDate;
+  }
+
+  @Override
+  public int compareTo(Task other) {
+    return id-other.getId();
   }
 }

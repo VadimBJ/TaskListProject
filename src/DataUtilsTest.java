@@ -12,11 +12,9 @@ public class DataUtilsTest {
   Calendar calendar = new GregorianCalendar();
 
   @Test
-
   public void getDateToStr_dataNull() {
 
     assertEquals("не указано", DataUtils.getDateToStr(null));
-
   }
 
   @Test
@@ -156,14 +154,12 @@ public class DataUtilsTest {
   public void checkFormatData_invalidFormat2() {
 
     assertThrowsExactly(StringIndexOutOfBoundsException.class, () -> DataUtils.checkFormatData("1ddddd"));
-
   }
 
   @Test
   public void checkFormatData_invalidFormat3() {
 
     assertThrowsExactly(NumberFormatException.class, () -> DataUtils.checkFormatData("2023..12"));
-
   }
 
   @Test

@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 public class Output implements Finals {
@@ -103,7 +104,7 @@ public class Output implements Finals {
 
   public static void sortByStatusAndDataPlan(BufferedReader br, List<Task> taskList) throws IOException {
     System.out.println();
-    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, RESET, RESET, PURPLE, RESET);
+    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, RESET, RESET, BLUE, RESET);
     System.out.println(headerColorSort);
     SortStatusAndDatePlan sortRule = new SortStatusAndDatePlan();
     taskList.sort(sortRule);
@@ -111,12 +112,12 @@ public class Output implements Finals {
       System.out.print(task);
     }
     System.out.println(FOOTER);
-    Menu.menuSortChoice(br, taskList);
+    Menu.menuTaskListShow(br, taskList);
   }
 
   public static void sortByStatusAndName(BufferedReader br, List<Task> taskList) throws IOException {
     System.out.println();
-    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, PURPLE, RESET, RESET, RESET);
+    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, BLUE, RESET, RESET, RESET);
     System.out.println(headerColorSort);
     SortDatePlanAndDescription sortRule = new SortDatePlanAndDescription();
     taskList.sort(sortRule);
@@ -124,12 +125,12 @@ public class Output implements Finals {
       System.out.print(task);
     }
     System.out.println(FOOTER);
-    Menu.menuSortChoice(br, taskList);
+    Menu.menuTaskListShow(br, taskList);
   }
 
   public static void sortByPriorityAndStatus(BufferedReader br, List<Task> taskList) throws IOException {
     System.out.println();
-    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, PURPLE, RESET, RESET, RESET);
+    headerColorSort = String.format(HEADER, RESET, RESET, BLUE, RESET, RESET, RESET, RESET, RESET);
     System.out.println(headerColorSort);
     SortPriorityAndStatus sortRule = new SortPriorityAndStatus();
     taskList.sort(sortRule);
@@ -137,12 +138,12 @@ public class Output implements Finals {
       System.out.print(task);
     }
     System.out.println(FOOTER);
-    Menu.menuSortChoice(br, taskList);
+    Menu.menuTaskListShow(br, taskList);
   }
 
   public static void sortByCategoryAndName(BufferedReader br, List<Task> taskList) throws IOException {
     System.out.println();
-    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, PURPLE, RESET, RESET, RESET);
+    headerColorSort = String.format(HEADER, BLUE, RESET, RESET, RESET, RESET, RESET, RESET, RESET);
     System.out.println(headerColorSort);
     SortCategoryAndName sortRule = new SortCategoryAndName();
     taskList.sort(sortRule);
@@ -150,7 +151,19 @@ public class Output implements Finals {
       System.out.print(task);
     }
     System.out.println(FOOTER);
-    Menu.menuSortChoice(br, taskList);
+    Menu.menuTaskListShow(br, taskList);
+  }
+
+  public static void sortById(BufferedReader br, List<Task> taskList) throws IOException {
+    System.out.println();
+    headerColorSort = String.format(HEADER, RESET, RESET, RESET, RESET, RESET, RESET, RESET, RESET);
+    System.out.println(headerColorSort);
+    Collections.sort(taskList);
+    for (Task task : taskList) {
+      System.out.print(task);
+    }
+    System.out.println(FOOTER);
+    Menu.menuTaskListShow(br, taskList);
   }
 
   public static void writeTaskToFile(List<Task> taskList) throws IOException {
